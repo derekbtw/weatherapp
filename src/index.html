@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="icon" type="image/png" href="assets/icongradient.png">
+  </head>
+  <body onload="startTime()">
+    <div id="electron-titlebar" class="inset no-maximize drag"><a id="time"></a><a id="dot">•</a><a id="localization"></a></div>
+    <div class="inside">
+    <div class="box">
+      <div id="weather">
+        <div id="left">
+        <a class="desc">TEMPERATURE (°C)</a><br><a class="temp" id="temp"></a>
+        </div>
+        <div id="right">
+        <p class="pressure" id="pressure"></p>
+        <p class="humidity" id="humidity"></p>
+        <p class="tempminmax" id="tempminmax"></p>
+        <p class="wind" id="wind"></p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+    <script>
+    // OpenWeatherMap API request
+    const request = require('request')
+    let apiKey = 'your api key';
+    let city = 'your city';
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+
+    request(url, function (err, response, body) {
+      if(err){ console.log('! error:', error);
+      } else {
+      let weather = JSON.parse(body)
+      let message = `It's ${weather.main.temp}° in ${weather.name}! ${weather.main.pressure}hPa, ${weather.main.humidity} humidity, ${weather.main.temp_min}° - ${weather.main.temp_max}°. ${weather.wind.speed}km/h,  ${weather.wind.deg}deg.`;
+      let loc = `${weather.name}`
+      let temp = `${weather.main.temp}°`.substring(0, 2);
+      let tempmin = `${weather.main.temp_min}°`.substring(0, 2);
+      let tempmax = `${weather.main.temp_max}°`.substring(0, 2);
+      let pressure = `${weather.main.pressure} hPa`
+      let humidity = `${weather.main.humidity}%`
+      let tempminmax = tempmin + '° to ' + tempmax + '°'
+      let wind = `${weather.wind.speed} km/h`
+      console.log(message);
+      document.getElementById('localization').innerHTML = loc;
+      document.getElementById('temp').innerHTML = temp + "°";
+      document.getElementById('pressure').innerHTML = pressure;
+      document.getElementById('humidity').innerHTML = humidity;
+      document.getElementById('tempminmax').innerHTML = tempminmax;
+      document.getElementById('wind').innerHTML = wind;
+      }
+    });
+
+    // Date and Time
+    function startTime() {
+      var today=new Date();
+      var h=today.getHours();
+      var m=today.getMinutes();
+      m=checkTime(m);
+      document.getElementById('time').innerHTML = h + ":" + m;
+      t=setTimeout('startTime()',500) }
+     function checkTime(i) { if (i<10) { i="0" + i; } return i}
+    </script>
+  </body>
+</html>
