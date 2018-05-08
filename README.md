@@ -10,7 +10,7 @@
 2. Now, package **Weather** using `electron-packager . --icon assets/icon.png`
 3. Run the *Weather.exe* or, if You are on Mac, *Weather.app*
 
-**If You just want to preview it, just download the already built package [here](#)!**
+**If You just want to preview it, just download the already built package [here](https://github.com/whoisroyal/weatherapp/tree/master/built)!**
 
 ## What can it do?
 Currently not much. **Weather** lives in system tray waiting for you to open it.
